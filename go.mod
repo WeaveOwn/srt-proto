@@ -1,4 +1,4 @@
-module srt-proto
+module github.com/WeaveOwn/srt-proto
 
 go 1.14
 
