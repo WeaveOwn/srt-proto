@@ -1,0 +1,48 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+option go_package = "srt-proto/src-core;src_core";
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.invoiceservice";
+option java_outer_classname = "RouteGuideProto";
+
+package src_core;
+
+// Interface exported by the server.
+service InvoiceService {
+  // A simple RPC.
+  //
+  // Obtains the feature at a given position.
+  //
+  // A feature with an empty name is returned if there's no feature at the given
+  // position.
+  rpc InitInvoice(AuthInfo) returns (Result) {}
+
+}
+
+// Points are represented as latitude-longitude pairs in the E7 representation
+// (degrees multiplied by 10**7 and rounded to the nearest integer).
+// Latitudes should be in the range +/- 90 degrees and longitude should be in
+// the range +/- 180 degrees (inclusive).
+message AuthInfo {
+  string appId = 1;
+  string appSecret = 2;
+}
+
+message Result {
+  int32 code = 1;
+  string msg = 2;
+}
+
