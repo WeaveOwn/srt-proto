@@ -13,7 +13,7 @@
 // limitations under the License.
 
 syntax = "proto3";
-option go_package = "github.com/WeaveOwn/srt-proto/src-core;src_core";
+option go_package = ".;src_core";
 option java_multiple_files = true;
 option java_package = "io.grpc.examples.invoiceservice";
 option java_outer_classname = "RouteGuideProto";
