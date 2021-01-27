@@ -21,7 +21,11 @@
 package src_core
 
 import (
+	context "context"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -253,4 +257,96 @@ func file_invoice_service_proto_init() {
 	file_invoice_service_proto_rawDesc = nil
 	file_invoice_service_proto_goTypes = nil
 	file_invoice_service_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// InvoiceServiceClient is the client API for InvoiceService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type InvoiceServiceClient interface {
+	// A simple RPC.
+	//
+	// Obtains the feature at a given position.
+	//
+	// A feature with an empty name is returned if there's no feature at the given
+	// position.
+	InitInvoice(ctx context.Context, in *AuthInfo, opts ...grpc.CallOption) (*Result, error)
+}
+
+type invoiceServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInvoiceServiceClient(cc grpc.ClientConnInterface) InvoiceServiceClient {
+	return &invoiceServiceClient{cc}
+}
+
+func (c *invoiceServiceClient) InitInvoice(ctx context.Context, in *AuthInfo, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/src_core.InvoiceService/InitInvoice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InvoiceServiceServer is the server API for InvoiceService service.
+type InvoiceServiceServer interface {
+	// A simple RPC.
+	//
+	// Obtains the feature at a given position.
+	//
+	// A feature with an empty name is returned if there's no feature at the given
+	// position.
+	InitInvoice(context.Context, *AuthInfo) (*Result, error)
+}
+
+// UnimplementedInvoiceServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedInvoiceServiceServer struct {
+}
+
+func (*UnimplementedInvoiceServiceServer) InitInvoice(context.Context, *AuthInfo) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InitInvoice not implemented")
+}
+
+func RegisterInvoiceServiceServer(s *grpc.Server, srv InvoiceServiceServer) {
+	s.RegisterService(&_InvoiceService_serviceDesc, srv)
+}
+
+func _InvoiceService_InitInvoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InvoiceServiceServer).InitInvoice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/src_core.InvoiceService/InitInvoice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InvoiceServiceServer).InitInvoice(ctx, req.(*AuthInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _InvoiceService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "src_core.InvoiceService",
+	HandlerType: (*InvoiceServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "InitInvoice",
+			Handler:    _InvoiceService_InitInvoice_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "invoice_service.proto",
 }
